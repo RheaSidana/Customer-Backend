@@ -15,7 +15,7 @@ repositories {
 dependencies {
     implementation 'org.postgresql:postgresql:42.3.6'
     flyway {
-        url = 'jdbc:postgresql://localhost:5432/commenting'
+        url = 'jdbc:postgresql://localhost:5432/customer'
         user = 'postgres'
         password = 'rheasp@3_238'
     }
