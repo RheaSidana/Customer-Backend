@@ -5,7 +5,7 @@ plugins {
     id "org.flywaydb.flyway" version "8.5.13"
 }
 
-group 'org.sunbasedaat.rhea.sidana'
+group 'org.sunbasedata.rhea.sidana'
 version '1.0-SNAPSHOT'
 
 repositories {
