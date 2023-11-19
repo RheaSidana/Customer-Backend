@@ -53,7 +53,7 @@ public class Error {
 
     @Override
     public String toString() {
-        return "AddCommentResponseBody{" +
+        return "Error{" +
                 "message='" + message + '\'' +
                 ", error='" + error + '\'' +
                 '}';

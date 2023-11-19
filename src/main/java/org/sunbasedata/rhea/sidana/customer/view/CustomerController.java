@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.sunbasedata.rhea.sidana.authentication.exception.InvalidAccessException;
+import org.sunbasedata.rhea.sidana.customer.exception.CustomerAlreadyExistsException;
 import org.sunbasedata.rhea.sidana.customer.exception.FieldIsEmptyOrBlankException;
 import org.sunbasedata.rhea.sidana.customer.exception.InvalidCommandException;
 import org.sunbasedata.rhea.sidana.customer.repository.model.Customer;
@@ -22,6 +23,10 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
     @PostMapping("/assignment.jsp")
     public ResponseEntity<Object> createNewCustomer(
             @RequestHeader("Authorization") String authorizationHeader,
@@ -30,7 +35,8 @@ public class CustomerController {
         Customer createdCustomer;
         try {
             createdCustomer = customerService.createNewCustomer(authorizationHeader, createCustomer, cmd);
-        } catch (InvalidAccessException ex) {
+        }
+        catch (InvalidAccessException ex) {
             Error error = new Error("Failure", ex.getMessage());
 
             return ResponseEntity.status(
@@ -38,7 +44,8 @@ public class CustomerController {
             ).body(
                     error
             );
-        } catch (InvalidCommandException ex){
+        }
+        catch (InvalidCommandException ex){
             Error error = new Error("Invalid Command", ex.getMessage());
 
             return ResponseEntity.status(
@@ -46,7 +53,8 @@ public class CustomerController {
             ).body(
                     error
             );
-        } catch (FieldIsEmptyOrBlankException ex){
+        }
+        catch (FieldIsEmptyOrBlankException ex){
             Error error = new Error("Invalid Field", ex.getMessage());
 
             return ResponseEntity.status(
@@ -54,11 +62,21 @@ public class CustomerController {
             ).body(
                     error
             );
-        } catch (UnableToSaveToDbException ex){
+        }
+        catch (UnableToSaveToDbException ex){
             Error error = new Error("DB Error", ex.getMessage());
 
             return ResponseEntity.status(
                     HttpStatus.INTERNAL_SERVER_ERROR
+            ).body(
+                    error
+            );
+        }
+        catch (CustomerAlreadyExistsException ex){
+            Error error = new Error("DB Error", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.BAD_REQUEST
             ).body(
                     error
             );

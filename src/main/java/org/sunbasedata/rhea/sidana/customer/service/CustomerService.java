@@ -9,12 +9,16 @@ import org.sunbasedata.rhea.sidana.authentication.service.AuthenticationService;
 import org.sunbasedata.rhea.sidana.contact.repository.model.Contact;
 import org.sunbasedata.rhea.sidana.contact.service.ContactService;
 import org.sunbasedata.rhea.sidana.customer.commands.Command;
+import org.sunbasedata.rhea.sidana.customer.exception.CustomerAlreadyExistsException;
 import org.sunbasedata.rhea.sidana.customer.exception.FieldIsEmptyOrBlankException;
 import org.sunbasedata.rhea.sidana.customer.exception.InvalidCommandException;
 import org.sunbasedata.rhea.sidana.customer.repository.CustomerRepository;
 import org.sunbasedata.rhea.sidana.customer.repository.model.Customer;
 import org.sunbasedata.rhea.sidana.customer.view.model.request.CreateRequest;
 import org.sunbasedata.rhea.sidana.exception.UnableToSaveToDbException;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -34,7 +38,10 @@ public class CustomerService {
             String authorizationHeader,
             CreateRequest createCustomer,
             String cmd
-    ) throws InvalidAccessException, InvalidCommandException, FieldIsEmptyOrBlankException, UnableToSaveToDbException {
+    ) throws InvalidAccessException,
+            InvalidCommandException,
+            FieldIsEmptyOrBlankException,
+            UnableToSaveToDbException, CustomerAlreadyExistsException {
         authenticationService.validateAuthorizationToken(authorizationHeader);
 
         Command command = Command.CREATE;
@@ -49,20 +56,37 @@ public class CustomerService {
         return customer;
     }
 
-    private Customer addToDB(Customer customer) throws UnableToSaveToDbException {
+    @Transactional
+    private Customer addToDB(Customer customer) throws UnableToSaveToDbException, CustomerAlreadyExistsException {
         Address address = addressService.addToDB(customer.getCustomerAddress());
         Contact contact = contactService.addToDB(customer.getCustomerContact());
 
         customer.setAddress(address.getId());
         customer.setContact(contact.getId());
 
+        Optional<Customer> alreadyInDB = isAlreadyInDB(customer);
+        if(alreadyInDB.isPresent()){
+            throw new CustomerAlreadyExistsException("customer already exists");
+        }
+
         Customer customerInDb = customerRepository.save(customer);
-        if(customerInDb == null){
+        if (customerInDb == null) {
             throw new UnableToSaveToDbException("unable to add customer to db");
         }
 
         customerInDb.setCustomerAddress(address);
         customerInDb.setCustomerContact(contact);
+        return customerInDb;
+    }
+
+    private Optional<Customer> isAlreadyInDB(Customer customer){
+        Optional<Customer> customerInDb = customerRepository.findByCustomer(
+                customer.getFirstName(),
+                customer.getLastName(),
+                customer.getAddress(),
+                customer.getContact()
+        );
+
         return customerInDb;
     }
 

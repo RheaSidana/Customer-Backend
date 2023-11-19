@@ -4,5 +4,6 @@ CREATE TABLE Address(
     Street VARCHAR(100),
     City VARCHAR(100),
     State VARCHAR(100),
-    PRIMARY KEY (ID)
+    PRIMARY KEY (ID),
+    CONSTRAINT unique_address UNIQUE (Address, Street, City, State)
 );
