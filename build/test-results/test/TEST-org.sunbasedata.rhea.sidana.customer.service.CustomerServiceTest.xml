@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-11-19T22:16:01" hostname="DESKTOP-BFNHOD6" time="0.632">
+  <properties/>
+  <testcase name="shouldNotCreateCustomerWhenInvalidCommand()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.294"/>
+  <testcase name="shouldNotCreateCustomerWhenEmptyOrBlankFirstName()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.089"/>
+  <testcase name="shouldNotCreateCustomerWhenInvalidateAuthorizationToken()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.012"/>
+  <testcase name="shouldCreateCustomer()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.18"/>
+  <testcase name="shouldNotCreateCustomerWhenEmptyOrBlankLastName()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.007"/>
+  <testcase name="shouldNotCreateCustomerWhenUnableToSaveToDb()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.016"/>
+  <testcase name="shouldNotCreateCustomerWhenCustomerAlreadyExists()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.016"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

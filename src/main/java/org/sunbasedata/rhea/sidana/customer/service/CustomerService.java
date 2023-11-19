@@ -18,6 +18,7 @@ import org.sunbasedata.rhea.sidana.customer.view.model.request.CreateRequest;
 import org.sunbasedata.rhea.sidana.exception.UnableToSaveToDbException;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,6 +55,22 @@ public class CustomerService {
         customer = addToDB(customer);
 
         return customer;
+    }
+
+    public List<Customer> getCustomerList(
+            String authorizationHeader,
+            String cmd
+    ) throws InvalidAccessException, InvalidCommandException {
+        authenticationService.validateAuthorizationToken(authorizationHeader);
+
+        Command command = Command.GET_CUSTOMER_LIST;
+        validateCommand(command, cmd);
+
+        return getAllCustomers();
+    }
+
+    private List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 
     @Transactional
@@ -128,4 +145,6 @@ public class CustomerService {
             throw new InvalidCommandException("no such command found!!");
         }
     }
+
+
 }

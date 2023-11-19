@@ -16,9 +16,10 @@ import org.sunbasedata.rhea.sidana.customer.view.model.response.Error;
 import org.sunbasedata.rhea.sidana.exception.UnableToSaveToDbException;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
-@RequestMapping("/sunbase/portal/api")
+@RequestMapping("/sunbase/portal/api/assignment.jsp")
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
@@ -27,7 +28,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("/assignment.jsp")
+    @PostMapping("")
     public ResponseEntity<Object> createNewCustomer(
             @RequestHeader("Authorization") String authorizationHeader,
             @Valid @RequestBody CreateRequest createCustomer,
@@ -87,6 +88,38 @@ public class CustomerController {
                 HttpStatus.CREATED
         ).body(
                 new CreateResponse("Customer created successfully", createdCustomer)
+        );
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Object> getCustomerList(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam(required = true, name = "cmd") String cmd
+    ){
+        List<Customer> customers ;
+        try{
+            customers = customerService.getCustomerList(authorizationHeader, cmd);
+        } catch (InvalidAccessException ex) {
+            Error error = new Error("Failure", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.BAD_REQUEST
+            ).body(
+                    error
+            );
+        }
+        catch (InvalidCommandException ex){
+            Error error = new Error("Invalid Command", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            ).body(
+                    error
+            );
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                customers
         );
     }
 }

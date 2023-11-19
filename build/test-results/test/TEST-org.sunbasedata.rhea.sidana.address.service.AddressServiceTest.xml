@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.sunbasedata.rhea.sidana.address.service.AddressServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-11-19T19:16:33" hostname="DESKTOP-BFNHOD6" time="1.705">
+<testsuite name="org.sunbasedata.rhea.sidana.address.service.AddressServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-11-19T22:15:59" hostname="DESKTOP-BFNHOD6" time="1.917">
   <properties/>
-  <testcase name="testAddToDB_AddressNotInDB_Success()" classname="org.sunbasedata.rhea.sidana.address.service.AddressServiceTest" time="1.693"/>
+  <testcase name="testAddToDB_AddressNotInDB_Success()" classname="org.sunbasedata.rhea.sidana.address.service.AddressServiceTest" time="1.892"/>
   <testcase name="shouldNotAddToDBWhenAddressAlreadyInDB()" classname="org.sunbasedata.rhea.sidana.address.service.AddressServiceTest" time="0.003"/>
-  <testcase name="shouldNotAddToDBWhenUnableToSaveToDb()" classname="org.sunbasedata.rhea.sidana.address.service.AddressServiceTest" time="0.007"/>
+  <testcase name="shouldNotAddToDBWhenUnableToSaveToDb()" classname="org.sunbasedata.rhea.sidana.address.service.AddressServiceTest" time="0.019"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
