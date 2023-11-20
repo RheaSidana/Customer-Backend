@@ -89,6 +89,78 @@ public class CustomerService {
         return customer;
     }
 
+    public Customer updateCustomer(
+            String authorizationHeader,
+            String cmd,
+            String uuid,
+            CreateRequest updateCustomer
+    ) throws InvalidAccessException,
+            InvalidCommandException,
+            InvalidCustomerUuidException,
+            CustomerNotInDbException,
+            UnableToSaveToDbException, NoUpdateAvailableException {
+        authenticationService.validateAuthorizationToken(authorizationHeader);
+
+        Command command = Command.UPDATE;
+        validateCommand(command, cmd);
+
+        Long id = Long.parseLong(uuid);
+        validateCustomerUuid(id);
+        Customer customer = validateCustomerInDb(id);
+
+        // update customer
+        // if address change
+        // if contact change
+        // if name change
+        customer = updateToDB(customer, updateCustomer);
+
+        return customer;
+    }
+
+    private Customer updateToDB(
+            Customer customer,
+            CreateRequest updateCustomer
+    ) throws UnableToSaveToDbException,
+            NoUpdateAvailableException {
+        Customer foundInDb = new Customer(customer);
+
+        Address address = addressService.getAddress(customer.getAddress());
+        address = addressService.createNewIfRequired(address, updateCustomer);
+
+        Contact contact = contactService.getContact(customer.getContact());
+        contact = contactService.createNewIfRequired(contact,updateCustomer);
+
+        if(!customer.getFirstName().equals(updateCustomer.getFirst_name())){
+            customer.setFirstName(updateCustomer.getFirst_name());
+        }
+        if(!customer.getLastName().equals(updateCustomer.getLast_name())){
+            customer.setLastName(updateCustomer.getLast_name());
+        }
+        if(customer.getContact() != contact.getId()){
+            customer.setContact(contact.getId());
+            customer.setCustomerContact(contact);
+        }
+        if(customer.getAddress() != address.getId()){
+            customer.setAddress(address.getId());
+            customer.setCustomerAddress(address);
+        }
+
+        Customer updatedCustomer = customerRepository.save(customer);
+        if(updatedCustomer == foundInDb){
+            throw new NoUpdateAvailableException("No update found for the object");
+        }
+
+        if(updatedCustomer == null){
+            throw new UnableToSaveToDbException("unable to save changes to db: null");
+        }
+
+        Optional<Customer> customerInDb = getById(customer.getId());
+        if(customerInDb.get() != updatedCustomer){
+            throw new UnableToSaveToDbException("unable to save changes to db");
+        }
+        return updatedCustomer;
+    }
+
     private void deleteFromDb(Long id) throws UnableToDeleteCustomerException {
         customerRepository.deleteById(id);
 

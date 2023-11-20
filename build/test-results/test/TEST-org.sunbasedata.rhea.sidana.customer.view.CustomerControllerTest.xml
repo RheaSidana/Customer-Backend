@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2023-11-20T14:59:49" hostname="DESKTOP-BFNHOD6" time="0.08">
+<testsuite name="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2023-11-20T19:49:16" hostname="DESKTOP-BFNHOD6" time="0.083">
   <properties/>
-  <testcase name="shouldNotCreateCustomerWhenFieldIsEmptyOrBlank()" classname="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" time="0.066"/>
-  <testcase name="shouldNotCreateCustomerWhenInvalidCommand()" classname="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" time="0.002"/>
+  <testcase name="shouldNotCreateCustomerWhenFieldIsEmptyOrBlank()" classname="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" time="0.064"/>
+  <testcase name="shouldNotCreateCustomerWhenInvalidCommand()" classname="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" time="0.005"/>
   <testcase name="shouldCreateCustomer()" classname="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" time="0.004"/>
-  <testcase name="shouldNotCreateCustomerWhenUnableToSaveToDb()" classname="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" time="0.001"/>
+  <testcase name="shouldNotCreateCustomerWhenUnableToSaveToDb()" classname="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" time="0.002"/>
   <testcase name="shouldNotCreateCustomerWhenInvalidAccess()" classname="org.sunbasedata.rhea.sidana.customer.view.CustomerControllerTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

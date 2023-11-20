@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-11-20T14:59:48" hostname="DESKTOP-BFNHOD6" time="0.454">
+<testsuite name="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-11-20T19:49:16" hostname="DESKTOP-BFNHOD6" time="0.512">
   <properties/>
-  <testcase name="shouldNotCreateCustomerWhenInvalidCommand()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.193"/>
-  <testcase name="shouldNotCreateCustomerWhenEmptyOrBlankFirstName()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.071"/>
+  <testcase name="shouldNotCreateCustomerWhenInvalidCommand()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.214"/>
+  <testcase name="shouldNotCreateCustomerWhenEmptyOrBlankFirstName()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.085"/>
   <testcase name="shouldNotCreateCustomerWhenInvalidateAuthorizationToken()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.007"/>
-  <testcase name="shouldCreateCustomer()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.142"/>
+  <testcase name="shouldCreateCustomer()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.161"/>
   <testcase name="shouldNotCreateCustomerWhenEmptyOrBlankLastName()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.007"/>
   <testcase name="shouldNotCreateCustomerWhenUnableToSaveToDb()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.015"/>
-  <testcase name="shouldNotCreateCustomerWhenCustomerAlreadyExists()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.011"/>
+  <testcase name="shouldNotCreateCustomerWhenCustomerAlreadyExists()" classname="org.sunbasedata.rhea.sidana.customer.service.CustomerServiceTest" time="0.009"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -56,6 +56,14 @@ public class Customer {
         this.contact = contact;
     }
 
+    public Customer(Customer customer) {
+        this.id = customer.id;
+        this.firstName = customer.firstName;
+        this.lastName = customer.lastName;
+        this.address = customer.address;
+        this.contact = customer.contact;
+    }
+
     public Long getId() {
         return id;
     }

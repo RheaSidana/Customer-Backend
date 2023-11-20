@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.sunbasedata.rhea.sidana.contact.repository.ContactRepository;
 import org.sunbasedata.rhea.sidana.contact.repository.model.Contact;
+import org.sunbasedata.rhea.sidana.customer.view.model.request.CreateRequest;
 import org.sunbasedata.rhea.sidana.exception.UnableToSaveToDbException;
 
 import java.util.Optional;
@@ -33,5 +34,26 @@ public class ContactService {
         );
 
         return contactInDb;
+    }
+
+    public Contact getContact(Long contactID) {
+        return contactRepository.findById(contactID).get();
+    }
+
+    public Contact createNewIfRequired(Contact contact, CreateRequest updateCustomer) throws UnableToSaveToDbException {
+        if(!(
+                contact.getPhone().equals(updateCustomer.getPhone()) &&
+                        contact.getEmail().equals(updateCustomer.getEmail())
+        )){
+            return addToDB(
+                    new Contact(
+                            0L,
+                            updateCustomer.getEmail(),
+                            updateCustomer.getPhone()
+                    )
+            );
+        }
+
+        return contact;
     }
 }

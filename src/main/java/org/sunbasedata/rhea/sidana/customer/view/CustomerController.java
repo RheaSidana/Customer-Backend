@@ -188,4 +188,80 @@ public class CustomerController {
                 new Success("successfully deleted", customer)
         );
     }
+
+    @PutMapping("")
+    public ResponseEntity<Object> updateCustomer(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam(required = true, name = "cmd") String cmd,
+            @RequestParam(required = true, name = "uuid") String uuid,
+            @Valid @RequestBody CreateRequest updateCustomer
+    ){
+        Customer customer;
+        try{
+            customer = customerService.updateCustomer(
+                    authorizationHeader,
+                    cmd,
+                    uuid,
+                    updateCustomer
+            );
+        }
+        catch (InvalidAccessException ex) {
+            Error error = new Error("Failure", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.BAD_REQUEST
+            ).body(
+                    error
+            );
+        }
+        catch (InvalidCommandException ex){
+            Error error = new Error("Invalid Command", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            ).body(
+                    error
+            );
+        }
+        catch (InvalidCustomerUuidException ex) {
+            Error error = new Error("UUID not found", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.BAD_REQUEST
+            ).body(
+                    error
+            );
+        }
+        catch (CustomerNotInDbException ex) {
+            Error error = new Error("UUID not found", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.BAD_REQUEST
+            ).body(
+                    error
+            );
+        }
+        catch (UnableToSaveToDbException ex){
+            Error error = new Error("DB Error", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            ).body(
+                    error
+            );
+        }
+        catch (NoUpdateAvailableException ex){
+            return ResponseEntity.status(
+                    HttpStatus.OK
+            ).body(
+                    new Error("Invalid Request", ex.getMessage())
+            );
+        }
+
+        return ResponseEntity.status(
+                HttpStatus.OK
+        ).body(
+                new Success("successfully updated", customer)
+        );
+    }
 }

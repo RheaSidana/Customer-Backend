@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.sunbasedata.rhea.sidana.address.repository.AddressRepository;
 import org.sunbasedata.rhea.sidana.address.repository.model.Address;
+import org.sunbasedata.rhea.sidana.customer.view.model.request.CreateRequest;
 import org.sunbasedata.rhea.sidana.exception.UnableToSaveToDbException;
 
 import java.util.Optional;
@@ -37,5 +38,32 @@ public class AddressService {
 
 
         return byAddress;
+    }
+
+    public Address getAddress(Long addressID) {
+        Optional<Address> addressById = addressRepository.findById(addressID);
+        return addressById.get();
+    }
+
+    public Address createNewIfRequired(
+            Address address,
+            CreateRequest updateCustomer
+    ) throws UnableToSaveToDbException {
+        if(!(
+                address.getAddress().equals(updateCustomer.getAddress()) &&
+                address.getCity().equals(updateCustomer.getCity()) &&
+                address.getState().equals(updateCustomer.getState()) &&
+                address.getStreet().equals(updateCustomer.getStreet())
+        )){
+            return addToDB(new Address(
+                    0L,
+                    updateCustomer.getAddress(),
+                    updateCustomer.getStreet(),
+                    updateCustomer.getCity(),
+                    updateCustomer.getState()
+            ));
+        }
+
+        return address;
     }
 }
