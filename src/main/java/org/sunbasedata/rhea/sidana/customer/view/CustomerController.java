@@ -5,13 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.sunbasedata.rhea.sidana.authentication.exception.InvalidAccessException;
-import org.sunbasedata.rhea.sidana.customer.exception.CustomerAlreadyExistsException;
-import org.sunbasedata.rhea.sidana.customer.exception.FieldIsEmptyOrBlankException;
-import org.sunbasedata.rhea.sidana.customer.exception.InvalidCommandException;
+import org.sunbasedata.rhea.sidana.customer.exception.*;
 import org.sunbasedata.rhea.sidana.customer.repository.model.Customer;
 import org.sunbasedata.rhea.sidana.customer.service.CustomerService;
 import org.sunbasedata.rhea.sidana.customer.view.model.request.CreateRequest;
-import org.sunbasedata.rhea.sidana.customer.view.model.response.CreateResponse;
+import org.sunbasedata.rhea.sidana.customer.view.model.response.Success;
 import org.sunbasedata.rhea.sidana.customer.view.model.response.Error;
 import org.sunbasedata.rhea.sidana.exception.UnableToSaveToDbException;
 
@@ -31,8 +29,9 @@ public class CustomerController {
     @PostMapping("")
     public ResponseEntity<Object> createNewCustomer(
             @RequestHeader("Authorization") String authorizationHeader,
-            @Valid @RequestBody CreateRequest createCustomer,
-            @RequestParam(required = true, name = "cmd") String cmd) {
+            @RequestParam(required = true, name = "cmd") String cmd,
+            @Valid @RequestBody CreateRequest createCustomer
+    ) {
         Customer createdCustomer;
         try {
             createdCustomer = customerService.createNewCustomer(authorizationHeader, createCustomer, cmd);
@@ -87,7 +86,7 @@ public class CustomerController {
 //                201
                 HttpStatus.CREATED
         ).body(
-                new CreateResponse("Customer created successfully", createdCustomer)
+                new Success("Customer created successfully", createdCustomer)
         );
     }
 
@@ -120,6 +119,73 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 customers
+        );
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<Object> deleteCustomer(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam(required = true, name = "cmd") String cmd,
+            @RequestParam(required = true, name = "uuid") String uuid
+    ){
+        Customer customer;
+        try{
+            customer = customerService.deleteCustomer(
+                    authorizationHeader,
+                    cmd,
+                    uuid
+            );
+        }
+        catch (InvalidAccessException ex) {
+            Error error = new Error("Failure", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.BAD_REQUEST
+            ).body(
+                    error
+            );
+        }
+        catch (InvalidCommandException ex){
+            Error error = new Error("Invalid Command", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            ).body(
+                    error
+            );
+        }
+        catch (InvalidCustomerUuidException ex) {
+            Error error = new Error("UUID not found", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.BAD_REQUEST
+            ).body(
+                    error
+            );
+        }
+        catch (CustomerNotInDbException ex) {
+            Error error = new Error("UUID not found", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.BAD_REQUEST
+            ).body(
+                    error
+            );
+        }
+        catch (UnableToDeleteCustomerException ex){
+            Error error = new Error("Error Not Deleted", ex.getMessage());
+
+            return ResponseEntity.status(
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            ).body(
+                    error
+            );
+        }
+
+        return ResponseEntity.status(
+                HttpStatus.OK
+        ).body(
+                new Success("successfully deleted", customer)
         );
     }
 }

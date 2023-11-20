@@ -9,7 +9,7 @@ import org.sunbasedata.rhea.sidana.customer.exception.InvalidCommandException;
 import org.sunbasedata.rhea.sidana.customer.repository.model.Customer;
 import org.sunbasedata.rhea.sidana.customer.service.CustomerService;
 import org.sunbasedata.rhea.sidana.customer.view.model.request.CreateRequest;
-import org.sunbasedata.rhea.sidana.customer.view.model.response.CreateResponse;
+import org.sunbasedata.rhea.sidana.customer.view.model.response.Success;
 import org.sunbasedata.rhea.sidana.customer.view.model.response.Error;
 import org.sunbasedata.rhea.sidana.exception.UnableToSaveToDbException;
 
@@ -39,8 +39,8 @@ class CustomerControllerTest {
         CustomerController customerController = new CustomerController(mockCustomerService);
         ResponseEntity<Object> response = customerController.createNewCustomer(
                 "token",
-                createRequest,
-                "create"
+                "create",
+                createRequest
         );
 
         // Assert
@@ -68,8 +68,8 @@ class CustomerControllerTest {
         CustomerController customerController = new CustomerController(mockCustomerService);
         ResponseEntity<Object> response = customerController.createNewCustomer(
                 "token",
-                createRequest,
-                "create"
+                "create",
+                createRequest
         );
 
         // Assert
@@ -97,8 +97,8 @@ class CustomerControllerTest {
         CustomerController customerController = new CustomerController(mockCustomerService);
         ResponseEntity<Object> response = customerController.createNewCustomer(
                 "token",
-                createRequest,
-                "create"
+                "create",
+                createRequest
         );
 
         // Assert
@@ -126,8 +126,8 @@ class CustomerControllerTest {
         CustomerController customerController = new CustomerController(mockCustomerService);
         ResponseEntity<Object> response = customerController.createNewCustomer(
                 "token",
-                createRequest,
-                "create"
+                "create",
+                createRequest
         );
 
         // Assert
@@ -150,14 +150,14 @@ class CustomerControllerTest {
                 )
         ).thenReturn(mockCustomer);
 
-        CreateResponse createResponse = new CreateResponse("Customer created successfully", mockCustomer);
+        Success createResponse = new Success("Customer created successfully", mockCustomer);
 
         // Act
         CustomerController customerController = new CustomerController(mockCustomerService);
         ResponseEntity<Object> response = customerController.createNewCustomer(
                 "token",
-                createRequest,
-                "create"
+                "create",
+                createRequest
         );
 
         // Assert

@@ -2,7 +2,8 @@ package org.sunbasedata.rhea.sidana.customer.commands;
 
 public enum Command {
     CREATE("create"),
-    GET_CUSTOMER_LIST("get_customer_list");
+    GET_CUSTOMER_LIST("get_customer_list"),
+    DELETE("delete");
 
     private final String cmd;
 

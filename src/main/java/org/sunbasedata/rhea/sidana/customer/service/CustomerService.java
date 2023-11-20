@@ -9,9 +9,7 @@ import org.sunbasedata.rhea.sidana.authentication.service.AuthenticationService;
 import org.sunbasedata.rhea.sidana.contact.repository.model.Contact;
 import org.sunbasedata.rhea.sidana.contact.service.ContactService;
 import org.sunbasedata.rhea.sidana.customer.commands.Command;
-import org.sunbasedata.rhea.sidana.customer.exception.CustomerAlreadyExistsException;
-import org.sunbasedata.rhea.sidana.customer.exception.FieldIsEmptyOrBlankException;
-import org.sunbasedata.rhea.sidana.customer.exception.InvalidCommandException;
+import org.sunbasedata.rhea.sidana.customer.exception.*;
 import org.sunbasedata.rhea.sidana.customer.repository.CustomerRepository;
 import org.sunbasedata.rhea.sidana.customer.repository.model.Customer;
 import org.sunbasedata.rhea.sidana.customer.view.model.request.CreateRequest;
@@ -67,6 +65,56 @@ public class CustomerService {
         validateCommand(command, cmd);
 
         return getAllCustomers();
+    }
+
+    public Customer deleteCustomer(
+            String authorizationHeader,
+            String cmd,
+            String uuid
+    ) throws InvalidAccessException,
+            InvalidCommandException,
+            InvalidCustomerUuidException,
+            CustomerNotInDbException,
+            UnableToDeleteCustomerException {
+        authenticationService.validateAuthorizationToken(authorizationHeader);
+
+        Command command = Command.DELETE;
+        validateCommand(command, cmd);
+
+        Long id = Long.parseLong(uuid);
+        validateCustomerUuid(id);
+        Customer customer = validateCustomerInDb(id);
+
+        deleteFromDb(id);
+        return customer;
+    }
+
+    private void deleteFromDb(Long id) throws UnableToDeleteCustomerException {
+        customerRepository.deleteById(id);
+
+        Optional<Customer> customerInDb = getById(id);
+        if(customerInDb.isPresent()){
+            throw new UnableToDeleteCustomerException("unable to delete customer from db");
+        }
+    }
+
+    private Customer validateCustomerInDb(Long uuid) throws CustomerNotInDbException {
+        Optional<Customer> customerInDb = getById(uuid);
+        if(!customerInDb.isPresent()){
+            throw new CustomerNotInDbException("customer not found in db");
+        }
+
+        return customerInDb.get();
+    }
+
+    private Optional<Customer> getById(Long uuid) {
+        return customerRepository.findById(uuid);
+    }
+
+    private void validateCustomerUuid(Long uuid) throws InvalidCustomerUuidException {
+        if(uuid < 1L){
+            throw new InvalidCustomerUuidException("customer id invalid!");
+        }
     }
 
     private List<Customer> getAllCustomers() {
@@ -145,6 +193,5 @@ public class CustomerService {
             throw new InvalidCommandException("no such command found!!");
         }
     }
-
 
 }
