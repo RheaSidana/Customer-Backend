@@ -1,7 +1,5 @@
 # Customer-Backend
 
-# Commenting
-
 <h1>Video Description: </h1>
 
 ```
