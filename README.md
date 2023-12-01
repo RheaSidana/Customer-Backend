@@ -8,8 +8,9 @@ will add soon
 
 <h1>About: </h1>
 <p>
-Customer CRUD using tokan generated after login.
+Customer CRUD using a token generated after login.
 </p>
+<br/><br/>
 
 <h1>Installation</h1>
 
